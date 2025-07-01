@@ -5,7 +5,9 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
+	"log"
 	"net/http"
+	"runtime/debug"
 	"time"
 
 	"github.com/bootdotdev/learn-cicd-starter/internal/database"
@@ -38,6 +40,8 @@ func (cfg *apiConfig) handlerUsersCreate(w http.ResponseWriter, r *http.Request)
 		ApiKey:    apiKey,
 	})
 	if err != nil {
+		log.Printf("CreateUser error: %v", err)
+		log.Printf("Stack trace:\n%s", debug.Stack())
 		respondWithError(w, http.StatusInternalServerError, "Couldn't create user", err)
 		return
 	}
